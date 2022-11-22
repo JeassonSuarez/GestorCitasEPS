@@ -18,7 +18,7 @@ export const Header = () => {
           </div>
           <div className='div-logoutSesion'>
             <p>Cerrar Sesión</p>
-            <AiOutlineLogout />
+            <AiOutlineLogout className='csesion'/>
           </div>
         </div>
     </div>

@@ -19,7 +19,7 @@ function App() {
         {/* se define el conjunto de rutas */}
         <Routes>
           {/* se esperan las rutas */}
-          <Route exact path = '/' element={<h1>Hola</h1>} />
+          <Route exact path = '/' element={<h1>ACA IRA EL LOGIN</h1>} />
           <Route path='/loader' element={ <Loader /> }/>
           <Route path='/afiliado' element={ <SesionAfiliado /> }/>
           <Route path='/admin' element={ <SesionAdmin /> }/>

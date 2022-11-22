@@ -6,6 +6,7 @@ import { Module } from '../../components/pure/module';
 import { User } from '../../components/pure/user';
 import ModuleC from '../../models/module.class';
 import USER from '../../models/user.enum.js'
+import MenuHam from '../../components/pure/menuHam'
 
 export const SesionAfiliado = () => {
   const modAsignacionCitas = new ModuleC("ASIGNACION DE CITAS", "Agende una nueva cita")
@@ -20,6 +21,7 @@ export const SesionAfiliado = () => {
           moduloUno = {<Module titulo={ modAsignacionCitas.titulo } descripcion={ modAsignacionCitas.descripcion }/>} 
           moduloDos = {<Module titulo={ modCitasProg.titulo } descripcion={ modCitasProg.descripcion }/>}/>
         <Footer />
+        <MenuHam/>
     </div>
   )
 }

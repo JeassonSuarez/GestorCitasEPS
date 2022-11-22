@@ -6,10 +6,12 @@ import { User } from '../../components/pure/user';
 import USER from '../../models/user.enum.js'
 import ModuleC  from '../../models/module.class.js'
 import { Module } from '../../components/pure/module'
+import MenuHam from '../../components/pure/menuHam';
 
 export const SesionMedico = () => {
   const agenda = new ModuleC("CREAR AGENDA", "Crear agenda del mes");
   const calendario = new ModuleC("CALENDARIO", "Consultar citas programadas");
+
   return (
     <div>
         <Header />
@@ -19,6 +21,7 @@ export const SesionMedico = () => {
           moduloUno={ <Module titulo={ agenda.titulo } descripcion={ agenda.descripcion }/> } 
           moduloDos={ <Module titulo={ calendario.titulo } descripcion={ calendario.descripcion }/> }/>
         <Footer />
+        <MenuHam />
     </div>
   )
 }

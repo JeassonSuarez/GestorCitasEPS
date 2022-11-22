@@ -5,6 +5,7 @@ import FiltroCrearAgenda from '../../components/pure/forms/filtro-crear-agenda'
 import { Header } from '../../components/pure/header'
 import User from '../../components/pure/user'
 import USER from '../../models/user.enum'
+import MenuHam from '../../components/pure/menuHam'
 
 const CrearAgenda = (props) => {
   return (
@@ -15,6 +16,7 @@ const CrearAgenda = (props) => {
         <h2 style={{width:'95vw', display:'block', margin:'auto', textAlign:'center' }}>{props.tituloModulo}</h2>
         <ContModulos citas={ <FiltroCrearAgenda /> }/>
         <Footer />
+        <MenuHam/>
     </div>
   )
 }

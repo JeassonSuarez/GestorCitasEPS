@@ -6,6 +6,7 @@ import { User } from '../../components/pure/user';
 import USER from '../../models/user.enum.js'
 import ModuleC from '../../models/module.class';
 import { Module } from '../../components/pure/module';
+import MenuHam from '../../components/pure/menuHam'
 
 export const SesionAdmin = () => {
   const rUsuario = new ModuleC("REGISTRAR USUARIO", "Registre un nuevo usuario");
@@ -17,7 +18,9 @@ export const SesionAdmin = () => {
         <hr></hr>
         <ContModulos 
           moduloUno={ <Module titulo={ rUsuario.titulo } descripcion={ rUsuario.descripcion }/> } 
-          moduloDos={ <Module titulo={ rEmpresa.titulo } descripcion={ rEmpresa.descripcion }/> }/>        <Footer />
+          moduloDos={ <Module titulo={ rEmpresa.titulo } descripcion={ rEmpresa.descripcion }/> }/>        
+        <Footer />
+        <MenuHam/>
     </div>
   )
 }
