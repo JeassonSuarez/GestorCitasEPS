@@ -32,6 +32,9 @@ hr{
     color: var(--font-color);
     cursor: pointer;
     transition:background-color  ease 0.3s;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: auto;
 }
 
 .rojo:hover{
@@ -50,6 +53,9 @@ hr{
     color: var(--font-color);
     cursor: pointer;
     transition: background-color ease 0.3s;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    margin: auto;
 }
 
 .azul:hover{

@@ -1,5 +1,8 @@
 .div-lista-citas{
     width:95%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
 }
 
 .div-conainer-citas-disponibles{
@@ -19,7 +22,7 @@
 }
 
 .div-conainer-citas{
-    width: 100%;
+    width: fit-content;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     justify-content: space-around;
@@ -28,7 +31,6 @@
 
 .div-conainer-citas>p, .div-conainer-citas-disponibles>p, .div-conainer-citasA-medico>p{
     padding-bottom: 5px;
-    border-bottom: 1px solid var(--color-borde-trans);
     width: 95%;
     text-align: center;
     font-weight: bold;
@@ -43,9 +45,29 @@
 }
 
 .cita{
-    margin-top: 15px;
+    margin: 15px;
     background-color: var(--color-fondo-cita);
     border-radius: 20px;
-    height: 77px;
+    height: fit-content;
     align-items: center;
+    padding: 15px;
+}
+
+.div-conainer-citas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 600px) {
+    .cita{
+        margin: 12px auto;
+    }
+}
+
+span, p{
+    float: right;
+    display: flex;
+    align-items: center;
+    word-break:break-all;
+    margin: 0 0 1em 1em;
 }

@@ -8,6 +8,7 @@
     justify-content: center;
     border-radius: 25px;
     margin-top: 25px;
+    padding: 5px;
 }
 
 .user-div-container-foto{
@@ -27,7 +28,7 @@
 }
 
 .user-div-container-datos{
-    height: 200px;
+    height: fit-content;
     display: flex;
     align-items: baseline;
     flex-direction: column;

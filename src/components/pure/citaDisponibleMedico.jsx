@@ -15,12 +15,16 @@ const CitaDisponibleMedico = () => {
 
   return (
     <div className="div-conainer-citas cita">
-        <span>1</span>
+        <p>ESPECIALIDAD</p>
+        <span>1sdfaaaaaaaaaaaaaaaaaaaaaaaa</span>
+        <p>FECHA</p>
         <span>2</span>
+        <p>SEDE</p>
         <span>3</span>
+        <p>MODALIDAD</p>
         <span>4</span>
+        <p>TIPO DE CITA</p>
         <span>5</span>
-        <span>6</span>
         <button type='submit' className='rojo' onClick={abrirModalCancelar}>Cancelar</button>
         <button type='submit' className='azul' onClick={abrirModalModificar}>Modificar</button>
         <Confirmacion titulo='Cancelar cita' descripcion='¿Esta seguro de que desea cancelar esta cita?' nameClassModal={nameClassModalCancelarC} abrirModal={abrirModalCancelar} />

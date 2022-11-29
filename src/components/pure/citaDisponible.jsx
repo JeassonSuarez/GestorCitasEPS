@@ -9,20 +9,22 @@ const CitaDisponible = (props) => {
     setNameClassModalTCita(params[0] || '');
   }
 
-
-  return (
-    <div className="div-conainer-citas cita">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span>7</span>
-        <button type='submit' className='azul' onClick={abrirModalTomarCita}>Tomar Cita</button>
-        <Confirmacion titulo='Tomar cita' descripcion='¿Esta seguro de que desea tomar esta cita?' nameClassModal={nameClassModalTCita} abrirModal={abrirModalTomarCita} />
-    </div>
-  )
+  return(<div className="div-conainer-citas cita">
+    <p>ESPECIALIDAD</p>
+    <span>1</span>
+    <p>MÉDICO</p>
+    <span>2</span>
+    <p>FECHA</p>
+    <span>3</span>
+    <p>SEDE</p>
+    <span>4</span>
+    <p>MODALIDAD</p>
+    <span>5</span>
+    <p>TIPO DE CITA</p>
+    <span>fds</span>
+    <button type='submit' className='azul' onClick={abrirModalTomarCita}>Tomar Cita</button>
+    <Confirmacion titulo='Tomar cita' descripcion='¿Esta seguro de que desea tomar esta cita?' nameClassModal={nameClassModalTCita} abrirModal={abrirModalTomarCita} />
+  </div>)
 }
 
 export default CitaDisponible

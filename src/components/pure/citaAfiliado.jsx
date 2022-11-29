@@ -15,11 +15,17 @@ const CitaAfiliado = ({...props}) => {
     
     return(
         <div className="div-conainer-citas cita">
+            <p>ESPECIALIDAD</p>
             <span>1</span>
+            <p>MÉDICO</p>
             <span>2</span>
+            <p>FECHA</p>
             <span>3</span>
+            <p>SEDE</p>
             <span>4</span>
+            <p>MODALIDAD</p>
             <span>5</span>
+            <p>TIPO DE CITA</p>
             <span>6</span>
             <button className='rojo' onClick = {abrirModal}>Cancelar</button>
             <button className='azul' onClick = {abrirModalModificar}>Modificar</button>
