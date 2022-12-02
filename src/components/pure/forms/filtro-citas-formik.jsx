@@ -62,81 +62,91 @@ export const FiltroCitas = () => {
         <Form className='form-filtro-asignacionCitas'>
 
           <label htmlFor="tipoCita">Tipo de cita:</label>
-          <Field component="select" id="tipoCita" name="tipoCita" className='select'>
-            <option value="">Seleccione una tipo de cita</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.tipoCita && touched.tipoCita &&
-              (
-                  <ErrorMessage component='div' name='tipoCita' className='errorM' />
-              )
-          }
+          <div>
+            <Field component="select" id="tipoCita" name="tipoCita" className='select'>
+              <option value="">Seleccione una tipo de cita</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.tipoCita && touched.tipoCita &&
+                (
+                    <ErrorMessage component='div' name='tipoCita' className='errorM' />
+                )
+            }
+          </div>
           
           <label htmlFor="especialidad">Especialidad:</label>
-          <Field component="select" id="especialidad" name="especialidad" className='select'>
-            <option value="">Seleccione una especialidad</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.especialidad && touched.especialidad &&
-              (
-                  <ErrorMessage component='div' name='especialidad' className='errorM' />
-              )
-          }
+          <div>
+            <Field component="select" id="especialidad" name="especialidad" className='select'>
+              <option value="">Seleccione una especialidad</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.especialidad && touched.especialidad &&
+                (
+                    <ErrorMessage component='div' name='especialidad' className='errorM' />
+                )
+            }
+          </div>
           <label htmlFor="hora">Hora:</label>
-          <Field component="select" id="hora" name="hora" className='select'>
-            <option value="">Seleccione una hora</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.hora && touched.hora &&
-              (
-                  <ErrorMessage component='div' name='hora' className='errorM' />
-              )
-          }
+          <div>
+            <Field component="select" id="hora" name="hora" className='select'>
+              <option value="">Seleccione una hora</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.hora && touched.hora &&
+                (
+                    <ErrorMessage component='div' name='hora' className='errorM' />
+                )
+            }
+          </div>
           <label htmlFor="sede">Sede:</label>
-          <Field component="select" id="sede" name="sede" className='select'>
-            <option value="">Seleccione una sede</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.sede && touched.sede &&
-              (
-                  <ErrorMessage component='div' name='sede' className='errorM' />
-              )
-          }
+          <div>
+            <Field component="select" id="sede" name="sede" className='select'>
+              <option value="">Seleccione una sede</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.sede && touched.sede &&
+                (
+                    <ErrorMessage component='div' name='sede' className='errorM' />
+                )
+            }
+          </div>
           <label htmlFor="medico">Médico:</label>
-          <Field component="select" id="medico" name="medico" className='select'>
-            <option value="">Seleccione un medico</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.medico && touched.medico &&
-              (
-                  <ErrorMessage component='div' name='medico' className='errorM' />
-              )
-          }
+          <div>
+            <Field component="select" id="medico" name="medico" className='select'>
+              <option value="">Seleccione un medico</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.medico && touched.medico &&
+                (
+                    <ErrorMessage component='div' name='medico' className='errorM' />
+                )
+            }
+          </div>
           <button type='submit' className='azul'>Buscar citas</button>
         </Form>
         )}

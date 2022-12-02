@@ -7,6 +7,11 @@
     text-align: center;
     box-shadow: 15px 15px 15px var(--color-fondo-cita);
     border-radius: 15px;
+    margin: 25px;
+}
+
+.module-div-container-titulo{
+    height: 60px;
 }
 
 .module-div-container>figure{
@@ -25,6 +30,7 @@
 }
 
 .module-p-descripcion{
-    width: fit-content;
+    display: block;
+    width: 100%;
     margin: auto;
 }

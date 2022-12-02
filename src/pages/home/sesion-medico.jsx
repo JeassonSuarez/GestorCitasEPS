@@ -10,7 +10,8 @@ import MenuHam from '../../components/pure/menuHam';
 
 export const SesionMedico = () => {
   const agenda = new ModuleC("CREAR AGENDA", "Crear agenda del mes");
-  const calendario = new ModuleC("CALENDARIO", "Consultar citas programadas");
+  const calendario = new ModuleC("CITAS AGENDADAS", "Consultar citas programadas");
+  const calendarioDos = new ModuleC("CITAS NO AGENDADAS", "Consultar citas no programadas");
 
   return (
     <div>
@@ -18,8 +19,9 @@ export const SesionMedico = () => {
         <User user = { USER }/>
         <hr></hr>
         <ContModulos 
-          moduloUno={ <Module titulo={ agenda.titulo } descripcion={ agenda.descripcion }/> } 
-          moduloDos={ <Module titulo={ calendario.titulo } descripcion={ calendario.descripcion }/> }/>
+          moduloUno={ <Module titulo={ agenda.titulo } descripcion={ agenda.descripcion } link='/crearAgenda'/> } 
+          moduloDos={ <Module titulo={ calendario.titulo } descripcion={ calendario.descripcion } link='/citasAsignadasMedico'/> }
+          moduloTres={ <Module titulo={ calendarioDos.titulo } descripcion={ calendarioDos.descripcion } link='/citasDMedico'/> } />
         <Footer />
         <MenuHam />
     </div>

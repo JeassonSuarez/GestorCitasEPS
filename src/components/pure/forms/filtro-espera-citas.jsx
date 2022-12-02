@@ -48,6 +48,7 @@ const FiltroEsperaCitas = () => {
           handleBlur }) => (
         <Form className='form-filtro-asignacionCitas'>          
           <label htmlFor="especialidad">Especialidad:</label>
+          <div>
           <Field component="select" id="especialidad" name="especialidad" className='select'>
             <option value="">Seleccione una especialidad</option>
             <option value="designer">Designer</option>
@@ -62,8 +63,9 @@ const FiltroEsperaCitas = () => {
                   <ErrorMessage component='div' name='especialidad' className='errorM' />
               )
           }
-
+          </div>
           <label htmlFor="desde">Desde:</label>
+          <div>
           <Field type='date' id="desde" name="desde" className='select' />
           {/* levelTask errors */}
           {
@@ -72,8 +74,9 @@ const FiltroEsperaCitas = () => {
                   <ErrorMessage component='div' name='desde' className='errorM' />
               )
           }
-
+          </div>
           <label htmlFor="hasta">Hasta:</label>
+          <div>
           <Field type='date' id="hasta" name="hasta" className='select' />
           {/* levelTask errors */}
           {
@@ -82,7 +85,7 @@ const FiltroEsperaCitas = () => {
                   <ErrorMessage component='div' name='hasta' className='errorM' />
               )
           }
-          
+          </div>
           <button type='submit' className='azul'>Activar alertas</button>
         
         </Form>

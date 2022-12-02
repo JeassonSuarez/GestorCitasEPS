@@ -112,3 +112,7 @@ select, .select{
 .visibleHam>div{
     cursor: pointer;
 }
+
+a{
+    text-decoration: none;
+}

@@ -18,8 +18,8 @@ export const SesionAfiliado = () => {
         <User user = { USER }/>
         <hr></hr>
         <ContModulos 
-          moduloUno = {<Module titulo={ modAsignacionCitas.titulo } descripcion={ modAsignacionCitas.descripcion }/>} 
-          moduloDos = {<Module titulo={ modCitasProg.titulo } descripcion={ modCitasProg.descripcion }/>}/>
+          moduloUno = {<Module titulo={ modAsignacionCitas.titulo } descripcion={ modAsignacionCitas.descripcion } link='/asignacionCitas'/>} 
+          moduloDos = {<Module titulo={ modCitasProg.titulo } descripcion={ modCitasProg.descripcion } link='/citasAfiliado'/>}/>
         <Footer />
         <MenuHam/>
     </div>

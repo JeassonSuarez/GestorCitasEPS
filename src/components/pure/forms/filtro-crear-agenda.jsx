@@ -62,37 +62,41 @@ const FiltroCrearAgenda = () => {
         <Form className='form-filtro-asignacionCitas'>          
           
           <label htmlFor="especialidad">Especialidad:</label>
-          <Field component="select" id="especialidad" name="especialidad" className='select'>
-            <option value="">Seleccione una especialidad</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.especialidad && touched.especialidad &&
-              (
-                  <ErrorMessage component='div' name='especialidad' className='errorM' />
-              )
-          }
+          <div>
+            <Field component="select" id="especialidad" name="especialidad" className='select'>
+              <option value="">Seleccione una especialidad</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.especialidad && touched.especialidad &&
+                (
+                    <ErrorMessage component='div' name='especialidad' className='errorM' />
+                )
+            }
+          </div>
           <label htmlFor="modalidad">Modalidad:</label>
-          <Field component="select" id="modalidad" name="modalidad" className='select'>
-            <option value="">Seleccione una modalidad</option>
-            <option value="designer">Designer</option>
-            <option value="development">Developer</option>
-            <option value="product">Product Manager</option>
-            <option value="other">Other</option>
-          </Field>
-          {/* levelTask errors */}
-          {
-              errors.modalidad && touched.modalidad &&
-              (
-                  <ErrorMessage component='div' name='modalidad' className='errorM' />
-              )
-          }
-
+          <div>
+            <Field component="select" id="modalidad" name="modalidad" className='select'>
+              <option value="">Seleccione una modalidad</option>
+              <option value="designer">Designer</option>
+              <option value="development">Developer</option>
+              <option value="product">Product Manager</option>
+              <option value="other">Other</option>
+            </Field>
+            {/* levelTask errors */}
+            {
+                errors.modalidad && touched.modalidad &&
+                (
+                    <ErrorMessage component='div' name='modalidad' className='errorM' />
+                )
+            }
+          </div>
           <label htmlFor="fecha">Fecha:</label>
+          <div>
           <Field type='date' id="fecha" name="fecha" className='select' />
           {/* levelTask errors */}
           {
@@ -101,7 +105,9 @@ const FiltroCrearAgenda = () => {
                   <ErrorMessage component='div' name='fecha' className='errorM' />
               )
           }
+          </div>
           <label htmlFor="hora">Hora:</label>
+          <div>
           <Field component="select" id="hora" name="hora" className='select'>
             <option value="">Seleccione una hora</option>
             <option value="designer">Designer</option>
@@ -116,13 +122,13 @@ const FiltroCrearAgenda = () => {
                   <ErrorMessage component='div' name='hora' className='errorM' />
               )
           }
-          
-          <button type='submit' className='azul' onClick={abrirModalAgenda}>Activar alertas</button>
+          </div>
+          <button type='submit' className='azul' onClick={abrirModalAgenda}>Crear Cita</button>
           <button className='azul'>Generar ultima agenda</button>
         </Form>
         )}
       </Formik>
-      <Confirmacion titulo='Confirmar creación de agenda' descripcion='¿Esta seguro de que desea crear esta agenda?' nameClassModal={nameClassModalAgenda} abrirModal={abrirModalAgenda} />  
+      <Confirmacion titulo='Confirmar creación de agenda' descripcion='¿Esta seguro de que desea crear esta cita?' nameClassModal={nameClassModalAgenda} abrirModal={abrirModalAgenda} />  
     </>
   )
 }

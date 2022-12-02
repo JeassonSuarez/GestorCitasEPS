@@ -17,8 +17,8 @@ export const SesionAdmin = () => {
         <User user = { USER }/>
         <hr></hr>
         <ContModulos 
-          moduloUno={ <Module titulo={ rUsuario.titulo } descripcion={ rUsuario.descripcion }/> } 
-          moduloDos={ <Module titulo={ rEmpresa.titulo } descripcion={ rEmpresa.descripcion }/> }/>        
+          moduloUno={ <Module titulo={ rUsuario.titulo } descripcion={ rUsuario.descripcion } link='/registroUsuario'/> } 
+          moduloDos={ <Module titulo={ rEmpresa.titulo } descripcion={ rEmpresa.descripcion } link='/registroEmpresa'/> }/>        
         <Footer />
         <MenuHam/>
     </div>

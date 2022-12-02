@@ -31,7 +31,6 @@ function App() {
           <Route path='/crearAgenda' element={ <CrearAgenda tituloModulo='Crear Agenda'/> }/>
           <Route path='/citasAsignadasMedico' element={ <CitasMedicoAsignadas tituloModulo='Lista de citas asignadas'/> }/>
           <Route path='/citasDMedico' element={ <CitasDisponiblesMedico tituloModulo='Agenda activa médico'/> }/>
-
           <Route path='*' element={<NFP />} />
         </Routes>
       </Router>
