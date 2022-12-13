@@ -33,13 +33,15 @@ export const Login = () => {
                   `;
     axios.get(host+query)
       .then( (res) => {
-        if(res.ok){
+        if(res.status === 200){
           return JSON.parse(res.data);
         }else{
           console.log('Usuario o contraseña equivocados');
+          return null;
         }
       })
       .then((res) => {
+        if(!res) return;
         if(formik.values.tipoUsuario === 'paciente'){
           localStorage.setItem('usuario', formik.values.usuario);
           localStorage.setItem('tipoUsuario', formik.values.tipoUsuario);
@@ -59,17 +61,22 @@ export const Login = () => {
             })
         }
         if(formik.values.tipoUsuario === 'medico'){
-          query = `SELECT * FROM Medico
-                  WHERE k_numeroDocumento = ${formik.values.usuario}
-                  AND k_tipoDocumento = '${res[0]}'`;
-          axios.get(host+query)
-            .then(r => {
-              if(r.ok){
-                localStorage.setItem('usuario', formik.values.usuario);
-                localStorage.setItem('tipoUsuario', 'medico');
-                navigate('/medico');
-              }
-            })
+          
+          query = `SELECT m.k_numeroDocumento, m.k_tipoDocumento 
+                  FROM Medico m 
+                  WHERE m.k_tipoDocumento = '${formik.values.usuario}'`;
+          try{
+            axios.get(host+query)
+              .then(r => {
+                if(r.status === 200){
+                  localStorage.setItem('usuario', formik.values.usuario);
+                  localStorage.setItem('tipoUsuario', 'medico');
+                  navigate('/medico');
+                }
+              })
+          }catch(e){
+            console.log("hubo un error");
+          }
         }
         
       });

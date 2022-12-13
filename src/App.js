@@ -22,7 +22,7 @@ function RequireAfiliado({children}){
   return children;
 }
 function RequireMedico({children}){
-  if(!localStorage.getItem('usuario') && localStorage.getItem('tipoUsuario') !== 'medico'){
+  if(!(localStorage.getItem('usuario')) && localStorage.getItem('tipoUsuario') !== 'medico'){
     return <Navigate to='/' replace={true}/>
   }
   return children;

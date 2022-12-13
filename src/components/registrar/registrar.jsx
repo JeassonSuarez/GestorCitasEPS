@@ -25,6 +25,7 @@ export const Registrar = () => {
         }
         setEmpresas(arr);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const initialValues = {
@@ -157,10 +158,7 @@ export const Registrar = () => {
       '${datos.correo}',
       '${datos.contrasena}',
       1,
-      ${formik.values.tipoUsuario !== 'Paciente'
-        ?3
-        :datos.empresa
-      }
+      ${formik.values.tipoUsuario !== "Paciente" ? 3 : datos.empresa}
       );`;
 
     console.log(host + insertar + query);
@@ -210,15 +208,43 @@ export const Registrar = () => {
     axios.get(host + insertar + query).then((res) => {
       console.log(res.data);
     });
+  };
+
+  const enviarMedico = async (datos) =>{
+    query = `INSERT INTO Medico
+            VALUES(
+              '${datos.tipoID}',
+              ${datos.identificacion},
+              '${formik.values.codigo}'
+            )`;
+    try{
+      console.log(host+insertar+query);
+      axios.get(host+insertar+query)
+        .then((res) => {
+          console.log(res.data);
+        });
+    }catch(err){
+      console.log(err);
+    }
   }
 
   const onSubmit = () => {
     switch (formik.values.tipoUsuario) {
       case "paciente":
-        enviarAfiliado(datos => enviarUsuario());
+        enviarUsuario()
+          .then((datos) => {
+            setTimeout(() => {
+              enviarAfiliado(datos);
+            }, 1000);
+          })
         break;
       case "medico":
-        
+        enviarUsuario()
+          .then((datos) => {
+            setTimeout(() => {
+              enviarMedico(datos);
+            }, 1000);
+          })
         break;
       default:
         break;
@@ -265,11 +291,10 @@ export const Registrar = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   >
-                    <option value="beneficiario">
-                      Seleccionar Especialidad
-                    </option>
-                    <option value="cotizante">Médico general</option>
-                    <option value="cotizante">Cirujano</option>
+                    <option value={0}>Seleccionar Especialidad</option>
+                    <option value={1}>Medicina general</option>
+                    <option value={2}>Pediatría</option>
+                    <option value={3}>Odontología</option>
                   </select>
                   <input
                     type="text"
@@ -401,60 +426,65 @@ export const Registrar = () => {
                 <option value="f">Femenino</option>
                 <option value="m">Otro</option>
               </select>
-              <div className="divisor">
-                <select
-                  name="afiliacion"
-                  id="afiliacion"
-                  value={formik.values.afiliacion}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="Beneficiario">Beneficiario</option>
-                  <option value="Afiliado">Afiliado</option>
-                </select>
+              {formik.values.tipoUsuario === "paciente" && (
+                <>
+                  <div className="divisor">
+                    <select
+                      name="afiliacion"
+                      id="afiliacion"
+                      value={formik.values.afiliacion}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="Beneficiario">Beneficiario</option>
+                      <option value="Afiliado">Afiliado</option>
+                    </select>
 
-                <select
-                  name="categoria"
-                  id="categoria"
-                  value={formik.values.categoria}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="A">A</option>
-                  <option value="B">B</option>
-                  <option value="C">C</option>
-                </select>
-              </div>
+                    <select
+                      name="categoria"
+                      id="categoria"
+                      value={formik.values.categoria}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                    </select>
+                  </div>
 
-              <span className="separador-texto">Datos del cotizante</span>
+                  <span className="separador-texto">Datos del cotizante</span>
 
-              <div className="divisor">
-                <select
-                  name="tipoIDCotizante"
-                  id="tipoIDCotizante"
-                  value={formik.values.tipoIDCotizante}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="Cedula de ciudadania">Cédula</option>
-                  <option value="Tarjeta de identidad">
-                    Tarjeta de identidad
-                  </option>
-                  <option value="Cedula  de extrangeria">
-                    Cédula de extranjería
-                  </option>
-                  <option value="Registro civil">Registro civil</option>
-                </select>
-                <input
-                  type="number"
-                  name="identificacionCotizante"
-                  id="identificacionCotizante"
-                  placeholder="Identificacion del cotizante"
-                  value={formik.values.identificacionCotizante}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </div>
+                  <div className="divisor">
+                    <select
+                      name="tipoIDCotizante"
+                      id="tipoIDCotizante"
+                      value={formik.values.tipoIDCotizante}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="Cedula de ciudadania">Cédula</option>
+                      <option value="Tarjeta de identidad">
+                        Tarjeta de identidad
+                      </option>
+                      <option value="Cedula  de extrangeria">
+                        Cédula de extranjería
+                      </option>
+                      <option value="Registro civil">Registro civil</option>
+                    </select>
+                    <input
+                      type="number"
+                      name="identificacionCotizante"
+                      id="identificacionCotizante"
+                      placeholder="Identificacion del cotizante"
+                      value={formik.values.identificacionCotizante}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                </>
+              )}
+
               <button className="enviar" type="submit">
                 Registrar
               </button>
