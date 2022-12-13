@@ -12,6 +12,8 @@ import EsperaCitas from './pages/home/espera-citas';
 import CrearAgenda from './pages/home/crear-agenda';
 import CitasMedicoAsignadas from './pages/home/citas-medico-asignadas';
 import CitasDisponiblesMedico from './pages/home/citas-disponibles-medico';
+import { Login } from './components/login/login'
+import { Registrar } from './components/registrar/registrar'
 function App() {
   return (
     <div className='app-div'>
@@ -19,7 +21,8 @@ function App() {
         {/* se define el conjunto de rutas */}
         <Routes>
           {/* se esperan las rutas */}
-          <Route exact path = '/' element={<h1>ACA IRA EL LOGIN</h1>} />
+          <Route exact path = '/' element={<Login />} />
+          <Route path = '/registrar' element={<Registrar />} />
           <Route path='/loader' element={ <Loader /> }/>
           <Route path='/afiliado' element={ <SesionAfiliado /> }/>
           <Route path='/admin' element={ <SesionAdmin /> }/>

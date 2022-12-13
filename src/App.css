@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Sen&display=swap');
+
 :root{
     --color-principal:#31B8D4;
     --color-borde-trans:#268ca09a;
@@ -7,6 +9,14 @@
     --color-fondo-cita: #31b9d434;
     --color-hr:#A5969C;
     --color-modal: #bbbbbb62;
+    --fondo: #F0F2F5;
+    --gris: #A5969C;
+    --fuente: 'Sen', sans-serif;
+
+    --borde-azul: 2px solid var(--azul-oscuro);
+    --borde-gris: 2px solid var(--gris);
+    --sombra: 3px 3px 1px 1px;
+    --curvatura: 10px;
 }
 
 .app-div{
