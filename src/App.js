@@ -1,6 +1,6 @@
 import './App.css';
 import { Loader } from './components/pure/loader';
-import { BrowserRouter as Router, Route,  Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route,  Routes, Navigate } from 'react-router-dom';
 import {SesionAfiliado} from '../src/pages/home/sesion-afiliado.jsx'
 import {SesionAdmin} from '../src/pages/home/sesion-admin.jsx'
 import {SesionMedico} from '../src/pages/home/sesion-medico.jsx'
@@ -14,6 +14,26 @@ import CitasMedicoAsignadas from './pages/home/citas-medico-asignadas';
 import CitasDisponiblesMedico from './pages/home/citas-disponibles-medico';
 import { Login } from './components/login/login'
 import { Registrar } from './components/registrar/registrar'
+
+function RequireAfiliado({children}){
+  if(!localStorage.getItem('usuario') && localStorage.getItem('tipoUsuario') !== 'afiliado'){
+    return <Navigate to='/' replace={true}/>
+  }
+  return children;
+}
+function RequireMedico({children}){
+  if(!localStorage.getItem('usuario') && localStorage.getItem('tipoUsuario') !== 'medico'){
+    return <Navigate to='/' replace={true}/>
+  }
+  return children;
+}
+function RequireAdmin({children}){
+  if(!localStorage.getItem('usuario') && localStorage.getItem('tipoUsuario') !== 'admin'){
+    return <Navigate to='/' replace={true}/>
+  }
+  return children;
+}
+
 function App() {
   return (
     <div className='app-div'>
@@ -24,16 +44,16 @@ function App() {
           <Route exact path = '/' element={<Login />} />
           <Route path = '/registrar' element={<Registrar />} />
           <Route path='/loader' element={ <Loader /> }/>
-          <Route path='/afiliado' element={ <SesionAfiliado /> }/>
-          <Route path='/admin' element={ <SesionAdmin /> }/>
-          <Route path='/medico' element={ <SesionMedico /> }/>
-          <Route path='/asignacionCitas' element={ <AsignacionCitas tituloModulo='Asignación Citas' /> }/>
-          <Route path='/citasAfiliado' element={ <CitasAfiliado tituloModulo='Citas programadas'/> }/>
-          <Route path='/citasDisponibles' element={ <CitasDisponibles tituloModulo='Citas disponibles'/> }/>
-          <Route path='/esperaCitas' element={ <EsperaCitas tituloModulo='Espera de citas'/> }/>
-          <Route path='/crearAgenda' element={ <CrearAgenda tituloModulo='Crear Agenda'/> }/>
-          <Route path='/citasAsignadasMedico' element={ <CitasMedicoAsignadas tituloModulo='Lista de citas asignadas'/> }/>
-          <Route path='/citasDMedico' element={ <CitasDisponiblesMedico tituloModulo='Agenda activa médico'/> }/>
+          <Route path='/afiliado' element={ <RequireAfiliado><SesionAfiliado /></RequireAfiliado> }/>
+          <Route path='/admin' element={ <RequireAdmin><SesionAdmin /></RequireAdmin> }/>
+          <Route path='/medico' element={ <RequireMedico><SesionMedico /></RequireMedico> }/>
+          <Route path='/asignacionCitas' element={ <RequireAfiliado><AsignacionCitas tituloModulo='Asignación Citas' /></RequireAfiliado> }/>
+          <Route path='/citasAfiliado' element={ <RequireAfiliado><CitasAfiliado tituloModulo='Citas programadas'/></RequireAfiliado> }/>
+          <Route path='/citasDisponibles' element={ <RequireAfiliado><CitasDisponibles tituloModulo='Citas disponibles'/></RequireAfiliado> }/>
+          <Route path='/esperaCitas' element={ <RequireAfiliado><EsperaCitas tituloModulo='Espera de citas'/></RequireAfiliado> }/>
+          <Route path='/crearAgenda' element={ <RequireMedico><CrearAgenda tituloModulo='Crear Agenda'/></RequireMedico> }/>
+          <Route path='/citasAsignadasMedico' element={ <RequireMedico><CitasMedicoAsignadas tituloModulo='Lista de citas asignadas'/></RequireMedico> }/>
+          <Route path='/citasDMedico' element={ <RequireMedico><CitasDisponiblesMedico tituloModulo='Agenda activa médico'/></RequireMedico> }/>
           <Route path='*' element={<NFP />} />
         </Routes>
       </Router>

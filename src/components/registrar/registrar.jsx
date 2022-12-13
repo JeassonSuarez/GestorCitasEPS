@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import "../login/login.css";
 import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css'
+import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 
 export const Registrar = () => {
@@ -10,21 +10,22 @@ export const Registrar = () => {
   const [empresas, setEmpresas] = useState([]);
 
   //let host = 'http://localhost:/eps-server?';
-  let host = 'https://eps-factores.000webhostapp.com?';
-  const buscar = 'accion=buscar&query=';
-  const insertar = 'accion=insertar&query=';
-  let query = 'SELECT * FROM EMPRESA';
+  let host = "https://eps-factores.000webhostapp.com?";
+  const buscar = "accion=buscar&query=";
+  const insertar = "accion=insertar&query=";
+  let query = "SELECT * FROM EMPRESA";
   useEffect(() => {
-    axios.get(host+buscar+query)
+    axios
+      .get(host + buscar + query)
       .then((res) => JSON.parse(res.data))
       .then((res) => {
         let arr = [];
-        for(let data of res){
+        for (let data of res) {
           arr.push(JSON.parse(data));
         }
         setEmpresas(arr);
-      });      
-  },[]);
+      });
+  }, []);
 
   const initialValues = {
     tipoUsuario: "seleccionar",
@@ -43,6 +44,11 @@ export const Registrar = () => {
     sexo: "masculino",
     codigo: "",
     contrasena: "",
+    afiliacion: "Beneficiario",
+    estado: "Activo",
+    categoria: "A",
+    identificacionCotizante: "",
+    tipoIDCotizante: "Cedula de ciudadania",
   };
 
   const usuarioValido = (e) => {
@@ -68,8 +74,8 @@ export const Registrar = () => {
         errors.empresa = "Se debe seleccionar una empresa válida";
       }
 
-      if (!values.identificacion) {
-        errors.identificacion = "Ingrese un número de identificacion";
+      if (!values.identificacion || values.identificacion > 2147483647) {
+        errors.identificacion = "Ingrese un número de identificacion válido";
       }
 
       if (values.contrasena?.length < 6 || !values.contrasena?.length > 16) {
@@ -83,42 +89,47 @@ export const Registrar = () => {
       if (!values.correo) {
         errors.correo = "Debe ingresar un correo";
       }
+
+      if (values.afiliacion === "Beneficiario") {
+        if (!values.identificacionCotizante) {
+          errors.identificacionCotizante =
+            "Se debe ingresar una identificacion";
+        }
+      }
     }
+
     return errors;
   };
 
-  let verificarEmpresa = async () =>{
-
-    let id=0;
-    if(formik.values.empresa === "otra"){
-      id = Math.round(Math.random() * 10000);        
+  let verificarEmpresa = async () => {
+    let id = 0;
+    if (formik.values.empresa === "otra") {
+      id = Math.round(Math.random() * 10000);
       query = `SELECT * FROM EMPRESA WHERE n_nombreEmpresa = '${formik.values.otraEmpresa}'`;
-      try{
-        axios.get(host+buscar+query)
-          .then((res) => {
-            if(!res.ok){
-              console.log("No está repetida la empresa");
-              query = `INSERT INTO EMPRESA VALUES (${id}, '${formik.values.otraEmpresa}')`;
-              axios.get(host+insertar+query)
-                .then((res) => {
-                  console.log("Se agregó una nueva empresa");
-                })
-            }
-          })
-      }catch(e){
+      try {
+        axios.get(host + buscar + query).then((res) => {
+          if (!res.ok) {
+            console.log("No está repetida la empresa");
+            query = `INSERT INTO EMPRESA VALUES (${id}, '${formik.values.otraEmpresa}')`;
+            axios.get(host + insertar + query).then((res) => {
+              console.log("Se agregó una nueva empresa");
+            });
+          }
+        });
+      } catch (e) {
         console.log("No se pudo agregar la empresa");
       }
-    }else{
+    } else {
       id = formik.values.empresa;
     }
     return id;
-  }
+  };
 
-  const enviarUsuario = async () =>{
+  const enviarUsuario = async () => {
     let fecha = formik.values.fecha;
     fecha = `${fecha.getFullYear()}-${fecha.getMonth() + 1}-${fecha.getDate()}`;
 
-    let datos={
+    let datos = {
       nombre: formik.values.nombre,
       contrasena: formik.values.contrasena,
       fijo: parseInt(formik.values.fijo),
@@ -127,12 +138,13 @@ export const Registrar = () => {
       nacimiento: fecha,
       tipoID: formik.values.tipoID,
       identificacion: parseInt(formik.values.identificacion),
-      sexo: formik.values.sexo.charAt(0)
+      sexo: formik.values.sexo.charAt(0),
+      afiliacion: formik.values.afiliacion,
     };
 
     datos.tipoAfiliacion = formik.values.tipoAfiliacion;
     datos.empresa = await verificarEmpresa();
-    
+
     query = `INSERT INTO Usuario VALUES 
       (
       '${datos.tipoID}',
@@ -145,20 +157,68 @@ export const Registrar = () => {
       '${datos.correo}',
       '${datos.contrasena}',
       1,
-      ${datos.empresa}
+      ${formik.values.tipoUsuario !== 'Paciente'
+        ?3
+        :datos.empresa
+      }
       );`;
 
-    console.log(host+insertar+query);
-    axios.get(host+insertar+query).then( () => {
-      console.log('agregado');
+    console.log(host + insertar + query);
+    axios.get(host + insertar + query).then((res) => {
+      console.log(res.data);
+    });
+    return datos;
+  };
+
+  const enviarAfiliado = async (datos) => {
+    if (formik.values.categoria === "A") {
+      datos.categoria = 1;
+    }
+    if (formik.values.categoria === "B") {
+      datos.categoria = 2;
+    }
+    if (formik.values.categoria === "C") {
+      datos.categoria = 3;
+    }
+
+    if (formik.values.afiliacion === "Afiliado") {
+      query = `INSERT INTO Afiliado_Beneficiario VALUES
+              (
+                '${datos.tipoID}',
+                ${datos.identificacion},
+                '${datos.afiliacion}',
+                'Activo',
+                ${datos.categoria},
+                ${null},
+                ${null}
+              )`;
+    } else {
+      datos.tipoIDCotizante = formik.values.tipoIDCotizante;
+      datos.identificacionCotizante = formik.values.identificacionCotizante;
+      query = `INSERT INTO Afiliado_Beneficiario VALUES
+              (
+                '${datos.tipoID}',
+                ${datos.identificacion},
+                '${datos.afiliacion}',
+                'Activo',
+                ${datos.categoria},
+                '${datos.tipoIDCotizante}',
+                ${datos.identificacionCotizante}
+              )`;
+    }
+    console.log(host + insertar + query);
+    axios.get(host + insertar + query).then((res) => {
+      console.log(res.data);
     });
   }
 
   const onSubmit = () => {
-    
-    switch(formik.values.tipoUsuario){
-      case 'paciente':
-        enviarUsuario();
+    switch (formik.values.tipoUsuario) {
+      case "paciente":
+        enviarAfiliado(datos => enviarUsuario());
+        break;
+      case "medico":
+        
         break;
       default:
         break;
@@ -224,16 +284,6 @@ export const Registrar = () => {
               )}
               {formik.values.tipoUsuario === "paciente" && (
                 <>
-                  <select
-                    name="tipoAfiliacion"
-                    id="tipoAfiliacion"
-                    value={formik.values.tipoAfiliacion}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  >
-                    <option value="beneficiario">Beneficiario</option>
-                    <option value="cotizante">Cotizante</option>
-                  </select>
                   <div className="divisor">
                     <select
                       name="empresa"
@@ -243,9 +293,12 @@ export const Registrar = () => {
                       onBlur={formik.handleBlur}
                     >
                       <option value="seleccionar">Seleccionar empresa</option>
-                      {empresas && empresas.map( empresa => 
-                        <option key={empresa[0]} value={empresa[0]}>{empresa[1]}</option>
-                      )}
+                      {empresas &&
+                        empresas.map((empresa) => (
+                          <option key={empresa[0]} value={empresa[0]}>
+                            {empresa[1]}
+                          </option>
+                        ))}
                       <option value="otra">Otra</option>
                     </select>
                     {formik.values.empresa === "otra" && (
@@ -263,6 +316,22 @@ export const Registrar = () => {
                 </>
               )}
               <div className="divisor">
+                <select
+                  name="tipoID"
+                  id="tipoID"
+                  value={formik.values.tipoID}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="Cedula de ciudadania">Cédula</option>
+                  <option value="Tarjeta de identidad">
+                    Tarjeta de identidad
+                  </option>
+                  <option value="Cedula  de extrangeria">
+                    Cédula de extranjería
+                  </option>
+                  <option value="Registro civil">Registro civil</option>
+                </select>
                 <input
                   type="number"
                   name="identificacion"
@@ -272,18 +341,6 @@ export const Registrar = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                <select
-                  name="tipoID"
-                  id="tipoID"
-                  value={formik.values.tipoID}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="Cedula de ciudadania">Cédula</option>
-                  <option value="Tarjeta de identidad">Tarjeta de identidad</option>
-                  <option value="Cedula  de extrangeria">Cédula de extranjería</option>
-                  <option value="Registro civil">Registro civil</option>
-                </select>
               </div>
               <input
                 type="password"
@@ -321,29 +378,83 @@ export const Registrar = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-                <>
-                  <DatePicker
-                    selected={formik.values.fecha}
-                    dateFormat="dd/MM/yyyy"
-                    className="select-fecha"
-                    id="fecha"
-                    name="fecha"
-                    showMonthDropdown
-                    showYearDropdown
-                    onChange={(date) => formik.setFieldValue("fecha", date)}
-                  />
-                </>
+              <>
+                <DatePicker
+                  selected={formik.values.fecha}
+                  dateFormat="dd/MM/yyyy"
+                  className="select-fecha"
+                  id="fecha"
+                  name="fecha"
+                  showMonthDropdown
+                  showYearDropdown
+                  onChange={(date) => formik.setFieldValue("fecha", date)}
+                />
+              </>
+              <select
+                name="sexo"
+                id="sexo"
+                value={formik.values.sexo}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="m">Masculino</option>
+                <option value="f">Femenino</option>
+                <option value="m">Otro</option>
+              </select>
+              <div className="divisor">
                 <select
-                  name="sexo"
-                  id="sexo"
-                  value={formik.values.sexo}
+                  name="afiliacion"
+                  id="afiliacion"
+                  value={formik.values.afiliacion}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
-                  <option value="m">Masculino</option>
-                  <option value="f">Femenino</option>
-                  <option value="m">Otro</option>
+                  <option value="Beneficiario">Beneficiario</option>
+                  <option value="Afiliado">Afiliado</option>
                 </select>
+
+                <select
+                  name="categoria"
+                  id="categoria"
+                  value={formik.values.categoria}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                </select>
+              </div>
+
+              <span className="separador-texto">Datos del cotizante</span>
+
+              <div className="divisor">
+                <select
+                  name="tipoIDCotizante"
+                  id="tipoIDCotizante"
+                  value={formik.values.tipoIDCotizante}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                >
+                  <option value="Cedula de ciudadania">Cédula</option>
+                  <option value="Tarjeta de identidad">
+                    Tarjeta de identidad
+                  </option>
+                  <option value="Cedula  de extrangeria">
+                    Cédula de extranjería
+                  </option>
+                  <option value="Registro civil">Registro civil</option>
+                </select>
+                <input
+                  type="number"
+                  name="identificacionCotizante"
+                  id="identificacionCotizante"
+                  placeholder="Identificacion del cotizante"
+                  value={formik.values.identificacionCotizante}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </div>
               <button className="enviar" type="submit">
                 Registrar
               </button>

@@ -112,6 +112,13 @@
     text-decoration: none;
 }
 
+.separador-texto{
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
 .select-fecha{
     width: 100%;
 }
