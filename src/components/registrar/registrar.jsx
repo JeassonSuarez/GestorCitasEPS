@@ -8,6 +8,9 @@ import axios from "axios";
 export const Registrar = () => {
   const [mostrarForm, setMostrar] = useState(false);
   const [empresas, setEmpresas] = useState([]);
+  const [sede, setCurrentSede] = useState(1);
+  const [sedes, setSedes] = useState([]);
+  const [consultorios, setConsultorios] = useState([]);
 
   //let host = 'http://localhost:/eps-server?';
   let host = "https://eps-factores.000webhostapp.com?";
@@ -25,8 +28,32 @@ export const Registrar = () => {
         }
         setEmpresas(arr);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    query = "SELECT k_sede, n_nombreSede FROM Sede";
+    axios
+      .get(host + buscar + query)
+      .then((res) => JSON.parse(res.data))
+      .then((res) => {
+        let arr = [];
+        for (let data of res) {
+          arr.push(JSON.parse(data));
+        }
+        setSedes(arr);
+      });
   }, []);
+
+  useEffect(() => {
+    query = `SELECT k_numeroConsultorio FROM Consultorio WHERE k_sede = ${sede}`;
+    axios
+      .get(host + buscar + query)
+      .then((res) => JSON.parse(res.data))
+      .then((res) => {
+        let arr = [];
+        for (let data of res) {
+          arr.push(JSON.parse(data));
+        }
+        setConsultorios(arr);
+      });
+  }, [sede]);
 
   const initialValues = {
     tipoUsuario: "seleccionar",
@@ -50,6 +77,8 @@ export const Registrar = () => {
     categoria: "A",
     identificacionCotizante: "",
     tipoIDCotizante: "Cedula de ciudadania",
+    consultorio: "Seleccionar",
+    sede: 1,
   };
 
   const usuarioValido = (e) => {
@@ -210,41 +239,49 @@ export const Registrar = () => {
     });
   };
 
-  const enviarMedico = async (datos) =>{
+  const enviarMedico = async (datos) => {
     query = `INSERT INTO Medico
             VALUES(
               '${datos.tipoID}',
               ${datos.identificacion},
               '${formik.values.codigo}'
             )`;
-    try{
-      console.log(host+insertar+query);
-      axios.get(host+insertar+query)
-        .then((res) => {
+    try {
+      console.log(host + insertar + query);
+      axios.get(host + insertar + query).then((res) => {
+        console.log(res.data);
+        query = `INSERT INTO Especialidad_Medico_Consultorio VALUES(
+          ${formik.values.especialidad},
+          '${datos.tipoID}',
+          ${datos.identificacion},
+          ${formik.values.consultorio},
+          ${formik.values.sede},
+          'Mañana'
+        )`;
+        axios.get(host+insertar+query).then((res) => {
           console.log(res.data);
-        });
-    }catch(err){
+        })
+      });
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const onSubmit = () => {
     switch (formik.values.tipoUsuario) {
       case "paciente":
-        enviarUsuario()
-          .then((datos) => {
-            setTimeout(() => {
-              enviarAfiliado(datos);
-            }, 1000);
-          })
+        enviarUsuario().then((datos) => {
+          setTimeout(() => {
+            enviarAfiliado(datos);
+          }, 1000);
+        });
         break;
       case "medico":
-        enviarUsuario()
-          .then((datos) => {
-            setTimeout(() => {
-              enviarMedico(datos);
-            }, 1000);
-          })
+        enviarUsuario().then((datos) => {
+          setTimeout(() => {
+            enviarMedico(datos);
+          }, 1000);
+        });
         break;
       default:
         break;
@@ -305,6 +342,27 @@ export const Registrar = () => {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
+                  <div className="divisor">
+                    <select
+                      name="sede"
+                      id="sede"
+                      value={formik.values.sede}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      {sedes?.map((dato) => <option value={dato[0]}>{dato[1]}</option>)}
+                    </select>
+                    <select
+                      name="consultorio"
+                      id="consultorio"
+                      value={formik.values.consultorio}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                    >
+                      <option value="Seleccionar">Seleccionar consultorio</option>
+                        {consultorios?.map((consultorio) => <option value={consultorio[0]}>{consultorio[0]}</option>)}
+                    </select>
+                  </div>
                 </>
               )}
               {formik.values.tipoUsuario === "paciente" && (
