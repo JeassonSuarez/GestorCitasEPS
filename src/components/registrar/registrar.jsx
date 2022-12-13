@@ -31,7 +31,7 @@ export const Registrar = () => {
     nombre: "",
     identificacion: "",
     tipoAfiliacion: "beneficiario",
-    tipoID: "cedula",
+    tipoID: "Cedula de ciudadania",
     empresa: "seleccionar",
     otraEmpresa: "",
     especialidad: "seleccionar",
@@ -87,7 +87,34 @@ export const Registrar = () => {
     return errors;
   };
 
-  const enviarUsuario = () =>{
+  let verificarEmpresa = async () =>{
+
+    let id=0;
+    if(formik.values.empresa === "otra"){
+      id = Math.round(Math.random() * 10000);        
+      query = `SELECT * FROM EMPRESA WHERE n_nombreEmpresa = '${formik.values.otraEmpresa}'`;
+      try{
+        axios.get(host+buscar+query)
+          .then((res) => {
+            if(!res.ok){
+              console.log("No está repetida la empresa");
+              query = `INSERT INTO EMPRESA VALUES (${id}, '${formik.values.otraEmpresa}')`;
+              axios.get(host+insertar+query)
+                .then((res) => {
+                  console.log("Se agregó una nueva empresa");
+                })
+            }
+          })
+      }catch(e){
+        console.log("No se pudo agregar la empresa");
+      }
+    }else{
+      id = formik.values.empresa;
+    }
+    return id;
+  }
+
+  const enviarUsuario = async () =>{
     let fecha = formik.values.fecha;
     fecha = `${fecha.getFullYear()}-${fecha.getMonth() + 1}-${fecha.getDate()}`;
 
@@ -103,31 +130,16 @@ export const Registrar = () => {
       sexo: formik.values.sexo.charAt(0)
     };
 
-    if(formik.values.tipoUsuario === "paciente"){
-      datos.tipoAfiliacion = formik.values.tipoAfiliacion;
-      if(formik.values.empresa === "otra"){
-        try{
-
-        }catch(e){
-          console.log("No se pudo agregar la empresa");
-        }
-      }else{
-        parseInt(formik.values.empresa)  
-      }
-    }
-
-    if(formik.values.tipoUsuario === "medico"){
-      datos.especialidad = formik.values.especialidad;
-      datos.codigo = formik.values.codigo;
-    }
+    datos.tipoAfiliacion = formik.values.tipoAfiliacion;
+    datos.empresa = await verificarEmpresa();
     
-    query = `INSERT INTO usuario VALUES 
+    query = `INSERT INTO Usuario VALUES 
       (
       '${datos.tipoID}',
       ${datos.identificacion},
       '${datos.nombre}',
       '${datos.sexo}',
-      ${fecha},
+      '${fecha}',
       ${datos.fijo},
       ${datos.celular},
       '${datos.correo}',
@@ -267,10 +279,10 @@ export const Registrar = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
-                  <option value="cc">Cédula</option>
-                  <option value="ti">Tarjeta de identidad</option>
-                  <option value="ce">Cédula de extranjería</option>
-                  <option value="pa">Pasaporte</option>
+                  <option value="Cedula de ciudadania">Cédula</option>
+                  <option value="Tarjeta de identidad">Tarjeta de identidad</option>
+                  <option value="Cedula  de extrangeria">Cédula de extranjería</option>
+                  <option value="Registro civil">Registro civil</option>
                 </select>
               </div>
               <input
@@ -328,9 +340,9 @@ export const Registrar = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
-                  <option value="cc">Masculino</option>
-                  <option value="ti">Femenino</option>
-                  <option value="ce">Otro</option>
+                  <option value="m">Masculino</option>
+                  <option value="f">Femenino</option>
+                  <option value="m">Otro</option>
                 </select>
               <button className="enviar" type="submit">
                 Registrar
